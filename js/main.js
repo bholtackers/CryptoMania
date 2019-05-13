@@ -1,5 +1,3 @@
-//example API: https://docs.pokemontcg.io
-
 let coins = [];
 
 function getCoins() {
