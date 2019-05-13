@@ -1,0 +1,47 @@
+<div id="myModal" class="modal">
+
+    <!-- Modal content -->
+    <div class="modal-content">
+        <div class="modal-header">
+            <h2>Sign in or Sign up!</h2>
+            <span class="close">&times;</span>
+        </div>
+        <div class="modal-body">
+            <div class="signin">
+                <h3>Sign in!</h3>
+                <div class="form-group">
+                    <label for="SignInEmail">Email address</label>
+                    <input type="email" class="form-control" id="SignInEmail" aria-describedby="emailHelp"
+                        placeholder="Enter email">
+                </div>
+                <div class="form-group">
+                    <label for="SignInPassword">Password</label>
+                    <input type="password" class="form-control" id="SignInPassword" placeholder="Password">
+                </div>
+                <button type="submit" onclick="signIn();" class="btn btn-outline-dark">Sign in!</button>
+            </div>
+            <hr>
+            <div class="signup">
+                <h3>Sign up!</h3>
+                <div class="form-group">
+                    <label for="SignUpUsername">Username</label>
+                    <input type="text" class="form-control" id="SignUpUsername" placeholder="Enter Username">
+                </div>
+                <div class="form-group">
+                    <label for="SignUpEmail">Email address</label>
+                    <input type="email" class="form-control" id="SignUpEmail" aria-describedby="emailHelp"
+                        placeholder="Enter email">
+                </div>
+                <div class="form-group">
+                    <label for="SignUpPassword">Password</label>
+                    <input type="password" class="form-control" id="SignUpPassword" placeholder="Password">
+                    <br>
+                    <input type="password" class="form-control" id="confirmSignUpPassword"
+                        placeholder="Confirm Password">
+                </div>
+                <button type="submit" onclick="signUp();" class="btn btn-outline-dark">Sign up!</button>
+            </div>
+        </div>
+    </div>
+
+</div>
