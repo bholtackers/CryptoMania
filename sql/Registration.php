@@ -2,9 +2,6 @@
 
 include '../inc/Connection.php';
 
-$file = '../log.txt';
-date_default_timezone_set('Europe/Amsterdam');
-
 $errors = array();
 
 $username = $_POST['username'];
@@ -47,8 +44,6 @@ if (count($errors) == 0) {
     $query = "INSERT INTO users (username, email, password) VALUES('$username', '$email', '$password')";
     mysqli_query($conn, $query);
     $date = date('d/m/Y h:i:s');
-    $log = "[$date] - $username registered \n";
-    file_put_contents($file, $log, FILE_APPEND | LOCK_EX);
     echo 'Success';
 }
 if (count($errors) > 0) {

@@ -2,8 +2,6 @@
 
 include '../inc/Connection.php';
 
-$file = '../log.txt';
-date_default_timezone_set('Europe/Amsterdam');
 $errors = array();
 
 $email = $_POST['email'];
@@ -28,9 +26,6 @@ if (count($errors) === 0) {
         $res = [];
         array_push($res, $row);
         array_push($res, 'Success');
-        $date = date('d/m/Y h:i:s');
-        $log = "[$date] - $row[username] logged in \n";
-        file_put_contents($file, $log, FILE_APPEND | LOCK_EX);
         echo json_encode($res);
     }else {
         array_push($errors, "Wrong email/password combination");
