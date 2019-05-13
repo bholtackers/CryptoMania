@@ -11,6 +11,7 @@ function getCoins() {
         url: "https://api.coincap.io/v2/assets",
 
         success: function (data) {
+            $('#balls').remove();
             coins = data;
             var template = $("#coinsTemplate").html();
             var renderTemplate = Mustache.render(template, coins);
