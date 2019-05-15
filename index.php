@@ -2,11 +2,6 @@
 <?php include './inc/Navbar.html' ?>
 
 <div id="mainBody">
-    <div id="balls" class="LoaderBalls">
-        <div class="LoaderBalls__item ball1"></div>
-        <div class="LoaderBalls__item ball2"></div>
-        <div class="LoaderBalls__item ball3"></div>
-    </div>
     <table id='coinTable' class='animated fadeInDown table table-striped table-hover rainbowTransparent white'>
         <thead>
             <tr>
@@ -34,6 +29,7 @@
             </template>
         </tbody>
     </table>
+    <?php include './inc/Loading.html' ?>
 </div>
 
 <?php include './inc/coinModal.html' ?>
