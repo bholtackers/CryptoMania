@@ -1,4 +1,7 @@
 let coins = [];
+let historyData = [];
+let labels = [];
+let prices = [];
 
 function getCoins() {
     $.ajax({
@@ -19,26 +22,83 @@ function getCoins() {
 }
 
 
-function getCoinInfo(coinId) {
+async function getCoinInfo(coinId) {
     let coin;
     $.ajax({
         type: "GET",
         dataType: "json",
         url: "https://api.coincap.io/v2/assets/" + coinId,
 
-        success: function (data) {
-
+        success: async function (data) {
             coin = data;
-
             var template = $("#modal-template").html();
-
             var renderTemplate = Mustache.render(template, coin);
-
             $('#modal-template-box').remove();
-            $('.modal-content').prepend(renderTemplate);
-
+            await $('.modal-content').prepend(renderTemplate);
+            getHistory(coinId);
         }
 
+    });
+}
+
+async function getHistory(coinId){
+    $.ajax({
+        url: "https://api.coincap.io/v2/assets/"+coinId+"/history?interval=d1",
+        method: "GET",
+        timeout: 0,
+
+        success: async function (data) {
+            historyData = data.data;
+            await historyData.forEach(element => {
+                element.date = moment(element.date).format('D MMM YYYY')
+                labels.push(element.date);
+                prices.push(element.priceUsd);
+            });
+            showGraph();
+        }
+    });
+}
+
+function showGraph(){
+    var ctx = $('#myChart');
+    let myChart = new Chart(ctx, {
+        type: 'line',
+        data: {
+            labels: labels,
+            datasets: [{
+                label: 'Price',
+                backgroundColor: 'rgba(128, 128, 128,0.5)',
+                borderColor: 'rgba(0,100,255)',
+                data: prices
+            }]
+        },
+        options: {
+            responsive: true,
+            scales: {
+                xAxes: [{
+                    display: true,
+                    scaleLabel: {
+                        display: true,
+                        labelString: 'Months'
+                    }
+                }],
+                yAxes: [{
+                    display: true,
+                    scaleLabel: {
+                        display: true,
+                        labelString: 'Value'
+                    }
+                }]
+            },
+            hover: {
+                mode: 'nearest',
+                intersect: true
+            },
+            tooltips: {
+                mode: 'index',
+                intersect: false,
+            },
+        }
     });
 }
 
