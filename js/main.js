@@ -1,19 +1,8 @@
-import CryptoNewsApi from '../node_modules/crypto-news-api';
-const CryptoApi = new CryptoNewsApi('d6dccf9ebcdfa53ec2f899707020da65');
-
-CryptoApi.enableSentiment()
-CryptoApi.getTopNews()
-    .then(function (articles) {
-        console.log(articles)
-    })
-    .catch(function (error) {
-        console.log(error)
-    })
-
 let coins = [];
 let historyData = [];
 let labels = [];
 let prices = [];
+let articles = [];
 
 function getCoins() {
     $.ajax({
@@ -29,6 +18,8 @@ function getCoins() {
             var template = $("#coinsTemplate").html();
             var renderTemplate = Mustache.render(template, coins);
             $('#coinTable tbody').append(renderTemplate);
+                $('#coinTable').DataTable();
+                $('.dataTables_length').addClass('bs-select');
         }
     });
 }
@@ -53,9 +44,9 @@ async function getCoinInfo(coinId) {
     });
 }
 
-async function getHistory(coinId){
+async function getHistory(coinId) {
     $.ajax({
-        url: "https://api.coincap.io/v2/assets/"+coinId+"/history?interval=d1",
+        url: "https://api.coincap.io/v2/assets/" + coinId + "/history?interval=d1",
         method: "GET",
         timeout: 0,
 
@@ -71,7 +62,7 @@ async function getHistory(coinId){
     });
 }
 
-function showGraph(){
+function showGraph() {
     var ctx = $('#myChart');
     let myChart = new Chart(ctx, {
         type: 'line',
@@ -114,7 +105,27 @@ function showGraph(){
     });
 }
 
+async function loadNews() {
+    $.ajax({
+        type: "GET",
+        method: "GET",
+        timeout: 0,
+        dataType: "json",
+        url: "https://min-api.cryptocompare.com/data/v2/news/?lang=EN&api_key=b1e925a07a3b5ca5f8fba60647d22ab20c64c2e90c1c61741f8a47a15d252c5c",
 
-$(document).ready(function () {
-    getCoins();
-});
+        success: async function (data) {
+            $('#balls').remove();
+            articles = data;
+            console.log(articles);
+            await articles.Data.forEach(element => {
+                console.log(element.published_on);
+                element.published_on = moment(element.published_on).format('D MMMM kk:mm:ss');
+            });
+            console.log(moment(1558110651).format('D MMMM kk:mm:ss'));
+            console.log(articles);
+            var template = $("#newsArticle").html();
+            var renderTemplate = Mustache.render(template, articles);
+            $('#Articles').append(renderTemplate);
+        }
+    });
+}

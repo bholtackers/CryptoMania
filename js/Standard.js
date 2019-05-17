@@ -7,6 +7,12 @@ async function load() {
     if (localStorage.getItem('admin') === '1') {
         await AdminNavbar();
     }
+    if (location.href.includes("index.php") || location.href.includes("Index.php")) {
+        await getCoins();
+    }
+    if (location.href.includes("news.php") || location.href.includes("News.php")) {
+        await loadNews();
+    }
 }
 
 function loggedInNavbar() {
