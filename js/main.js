@@ -1,3 +1,15 @@
+import CryptoNewsApi from '../node_modules/crypto-news-api';
+const CryptoApi = new CryptoNewsApi('d6dccf9ebcdfa53ec2f899707020da65');
+
+CryptoApi.enableSentiment()
+CryptoApi.getTopNews()
+    .then(function (articles) {
+        console.log(articles)
+    })
+    .catch(function (error) {
+        console.log(error)
+    })
+
 let coins = [];
 let historyData = [];
 let labels = [];
