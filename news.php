@@ -12,7 +12,6 @@
                         <h3 class="mb-0">
                             <a class="text-dark">{{title}}</a>
                         </h3>
-                        <div class="mb-1 text-muted">{{published_on}}</div>
                         <p class="card-text mb-auto">{{body}}</p>
                         <a href='{{url}}'>Continue reading</a>
                     </div>
