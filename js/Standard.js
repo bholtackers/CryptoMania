@@ -55,7 +55,9 @@ function signIn() {
                 loggedInNavbar();
                 $(".signin").before("<p class='success'>You signed in successfully.</p>");
                 modal.style.display = "none";
-                location.href = location.pathname + "index.php";
+                console.log(location.pathname);
+                location.href = location.pathname;
+                console.log(location.href);
             } else {
                 for (let i = 0; i < result.length; i++) {
                     console.log(result[i]);
