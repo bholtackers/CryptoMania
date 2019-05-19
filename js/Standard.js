@@ -25,7 +25,7 @@ function loggedInNavbar() {
 }
 
 function AdminNavbar() {
-    $(".navbar-nav").append("<li class='nav-item'><a class='nav-link' href='./Admin.php'>Admin page</a></li>");
+    //$(".navbar-nav").append("<li class='nav-item'><a class='nav-link' href='./Admin.php'>Admin page</a></li>");
 }
 
 function signIn() {
