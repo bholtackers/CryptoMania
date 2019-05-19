@@ -2,7 +2,7 @@
 <?php include './inc/Navbar.html' ?>
 
 <div id="mainBody">
-    <table id='coinTable' class='animated fadeInDown table table-striped table-hover rainbowTransparent white'>
+    <table id='coinTable' class='animated fadeInDown table table-hover rainbowTransparent white'>
         <thead>
             <tr>
                 <th scope='col'> Short </th>
