@@ -13,13 +13,21 @@ async function load() {
     if (location.href.includes("news.php") || location.href.includes("News.php")) {
         await loadNews();
     }
+    if (location.href.includes("CryptoFolio.php") || location.href.includes("cryptofolio.php")) {
+        if (!localStorage.getItem('loggedIn') || localStorage.getItem('loggedIn') != 'true') {
+            window.location.href = './index.php';
+        } else {
+            console.log("correct");
+        }
+    }
 }
 
 function loggedInNavbar() {
     let navbar = ".navbar-nav";
     $(navbar).after("<a class='navbar-brand white' id='welcome'>Welcome " + username + "</a>");
-    $(navbar).append("<li class='nav-item'><a class='nav-link' href='./About.php'>About us</a></li>");
-    $(navbar).append("<li class='nav-item'><a class='nav-link'>Contact us</a></li>");
+    $(navbar).append("<li class='nav-item'><a class='nav-link' href='./CryptoFolio.php'>Cryptofolio</a></li>");
+    //$(navbar).append("<li class='nav-item'><a class='nav-link' href='./About.php'>About us</a></li>");
+    //$(navbar).append("<li class='nav-item'><a class='nav-link'>Contact us</a></li>");
     $("#modalButton").remove();
     $("#welcome").after("<button onclick='logout();' class='btn btn-outline-light my-2 my-sm-0'>Logout</button>");
 }
