@@ -20,6 +20,9 @@ async function load() {
             console.log("correct");
         }
     }
+    if (!location.href.includes("index.php") && !location.href.includes("CryptoFolio.php") && !location.href.includes("news.php")) {
+        window.location.href = './index.php';
+    }
 }
 
 function loggedInNavbar() {

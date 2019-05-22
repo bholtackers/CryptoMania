@@ -3,6 +3,11 @@ let historyData = [];
 let labels = [];
 let prices = [];
 let articles = [];
+let myChart;
+
+let now = new Date();
+let timeToday = now.setDate(now.getDate());
+let timeWeekAgo = now.setDate(now.getDate() - 7);
 
 function getCoins() {
     $.ajax({
@@ -18,8 +23,8 @@ function getCoins() {
             var template = $("#coinsTemplate").html();
             var renderTemplate = Mustache.render(template, coins);
             $('#coinTable tbody').append(renderTemplate);
-                $('#coinTable').DataTable();
-                $('.dataTables_length').addClass('bs-select');
+            $('#coinTable').DataTable();
+            $('.dataTables_length').addClass('bs-select');
         }
     });
 }
@@ -46,11 +51,13 @@ async function getCoinInfo(coinId) {
 
 async function getHistory(coinId) {
     $.ajax({
-        url: "https://api.coincap.io/v2/assets/" + coinId + "/history?interval=d1",
+        url: "https://api.coincap.io/v2/assets/" + coinId + "/history?interval=d1&start=" + timeWeekAgo + "&end=" + timeToday + "",
         method: "GET",
         timeout: 0,
 
         success: async function (data) {
+            labels = [];
+            prices = [];
             historyData = data.data;
             await historyData.forEach(element => {
                 element.date = moment(element.date).format('D MMM YYYY')
@@ -64,7 +71,10 @@ async function getHistory(coinId) {
 
 function showGraph() {
     var ctx = $('#myChart');
-    let myChart = new Chart(ctx, {
+    if (myChart != undefined) {
+        myChart.destroy();
+    }
+    myChart = new Chart(ctx, {
         type: 'line',
         data: {
             labels: labels,
@@ -101,6 +111,11 @@ function showGraph() {
                 mode: 'index',
                 intersect: false,
             },
+            element: {
+                point: {
+                    radius: 0
+                }
+            }
         }
     });
 }
