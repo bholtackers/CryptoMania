@@ -17,9 +17,21 @@ function getCoins() {
         dataType: "json",
         url: "https://api.coincap.io/v2/assets",
 
-        success: function (data) {
+        success: async function (data) {
             $('#balls').remove();
             coins = data;
+            console.log(coins);
+            await coins.data.forEach(element => {
+                console.log("Yeetttt");
+                element.symbolLower = element.symbol.toLowerCase();
+                element.imageUrl = "https://static.coincap.io/assets/icons/" + element.symbolLower + "@2x.png";
+                $.get(element.imageUrl)
+                    .fail(function () {
+                        element.imageUrl = "./img/logo_mark.png";
+                        console.log("No");
+                    })
+            });
+            console.log("YEET");
             var template = $("#coinsTemplate").html();
             var renderTemplate = Mustache.render(template, coins);
             $('#coinTable tbody').append(renderTemplate);
@@ -43,6 +55,7 @@ async function getCoinInfo(coinId) {
             var renderTemplate = Mustache.render(template, coin);
             $('#modal-template-box').remove();
             await $('.modal-content').prepend(renderTemplate);
+            console.log(coinId);
             getHistory(coinId);
         }
 

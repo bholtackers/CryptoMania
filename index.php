@@ -17,7 +17,7 @@
             <template id="coinsTemplate">
                 {{#data}}
                 <tr>
-                    <td>{{symbol}}</td>
+                    <td><img src='{{imageUrl}}'style='width: 2rem'> {{symbol}}</td>
                     <td>{{name}}</td>
                     <td>{{priceUsd}} </td>
                     <td>{{marketCapUsd}}</td>
