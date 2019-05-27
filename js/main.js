@@ -22,20 +22,28 @@ function getCoins() {
             coins = data;
             console.log(coins);
             await coins.data.forEach(element => {
-                console.log("Yeetttt");
+                if (Math.sign(element.changePercent24Hr) == -1){
+                    element.PosOrNeg = "negative"
+                } else {
+                    element.PosOrNeg = "positive"
+                }
                 element.symbolLower = element.symbol.toLowerCase();
                 element.imageUrl = "https://static.coincap.io/assets/icons/" + element.symbolLower + "@2x.png";
-                $.get(element.imageUrl)
-                    .fail(function () {
-                        element.imageUrl = "./img/logo_mark.png";
-                        console.log("No");
-                    })
+                // $.get(element.imageUrl)
+                //     .fail(function () {
+                //         element.imageUrl = "./img/logo_mark.png";
+                //         console.log("No");
+                //     })
             });
             console.log("YEET");
             var template = $("#coinsTemplate").html();
             var renderTemplate = Mustache.render(template, coins);
             $('#coinTable tbody').append(renderTemplate);
-            $('#coinTable').DataTable();
+            $('#coinTable').DataTable({
+                order: [
+                    [3, 'dec']
+                ]
+            });
             $('.dataTables_length').addClass('bs-select');
         }
     });

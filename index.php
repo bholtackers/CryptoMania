@@ -21,7 +21,7 @@
                     <td>{{name}}</td>
                     <td>{{priceUsd}} </td>
                     <td>{{marketCapUsd}}</td>
-                    <td>{{volumeUsd24Hr}}</td>
+                    <td class="{{PosOrNeg}}">{{volumeUsd24Hr}}</td>
                     <td> <button type='button' class='btn modalbtn btn-primary' data-toggle="modal"
                             data-target="#coinModal" onclick='getCoinInfo("{{id}}");'> More Info </button> </td>
                 </tr>
