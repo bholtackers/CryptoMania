@@ -162,41 +162,40 @@ async function loadNews() {
 }
 
 async function addCoin(coin) {
-    debugger;
     //check if person is logged in
     if (localStorage.getItem('loggedIn') === 'true') {
-        console.log(coin);
-        let amount = $('#amountOfCoins')[0];
-        console.log(amount.value);
+        let amount = $('#amountOfCoins')[0].value;
         let name = "";
         let price = "";
         let date = moment().format("YYYY-DD-MM");
-        console.log(date);
-        for (let i = 0; i < coins.data.length; i++){
-            console.log(coins.data[i]);
-            if (coins.data[i].id == coin){
+        for (let i = 0; i < coins.data.length; i++) {
+            if (coins.data[i].id == coin) {
                 name = coins.data[i].name;
                 price = coins.data[i].priceUsd;
                 break;
             }
         }
-        debugger;
+        let userId = localStorage.getItem('id');
+        let totalValue = price * amount;
+        console.log(name, amount, price, date, userId, totalValue);
         await $.ajax({
             method: "POST",
             url: "app/Ajax.php",
             data: {
-                ownerId: localStorage.getItem('id'),
+                ownerId: userId,
                 name: name,
                 price: price,
-                totalValue: parseFloat(price) * amount,
+                totalValue: totalValue,
                 amount: amount,
                 date: date,
-                case: 'addcoin',
+                case: 'addcoin'
             },
             success: function (response) {
                 console.log(response);
-                let result = JSON.parse(response);
-                console.log(result);
+                var coinmodal = document.getElementById('coinModal');
+                coinmodal.style.display = 'none';
+                $('.modal-backdrop').remove();
+                $("#mainBody").prepend("<div class='animated fadeInLeft alert alert-success' role='alert'>Successfully added " + name + " to your cryptofolio! <a href='./Cryptofolio.php' class='alert-link'>Click here</a> To see your purchased coins!  <button type='button' class='close' data-dismiss='alert' aria-label='Close'><span aria-hidden='true'>&times;</span></button></div>");
             }
         })
 
@@ -206,4 +205,28 @@ async function addCoin(coin) {
         var modal = document.getElementById('myModal');
         modal.style.display = 'block';
     }
+}
+
+async function getCoinsFromUser() {
+    let userId = localStorage.getItem('id');
+    await $.ajax({
+        method: "POST",
+        url: "app/Ajax.php",
+        data: {
+            ownerId: userId,
+            case: 'getcoins' 
+        },
+        success: async function (response) {
+            let result = JSON.parse(response);
+            console.log(result);
+            if (result.length > 0) {
+                console.log("found some!");
+                //TODO: Show the results
+                //TODO: Give option to delete the coins
+            } else {
+                console.log("didn't find any");
+                //TODO: TELL M TO BUY SOME COINS!
+            }
+        }
+    });
 }

@@ -17,7 +17,7 @@ async function load() {
         if (!localStorage.getItem('loggedIn') || localStorage.getItem('loggedIn') != 'true') {
             window.location.href = './index.php';
         } else {
-            console.log("correct");
+            await getCoinsFromUser();
         }
     }
     if (!location.href.includes("index.php") && !location.href.includes("CryptoFolio.php") && !location.href.includes("news.php")) {
