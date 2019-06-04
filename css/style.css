@@ -78,3 +78,7 @@ table.dataTable thead .sorting_desc_disabled:before {
 .negative{
     color: red;
 }
+
+#addButton {
+    float: right;
+}

@@ -22,18 +22,13 @@ function getCoins() {
             coins = data;
             console.log(coins);
             await coins.data.forEach(element => {
-                if (Math.sign(element.changePercent24Hr) == -1){
+                if (Math.sign(element.changePercent24Hr) == -1) {
                     element.PosOrNeg = "negative"
                 } else {
                     element.PosOrNeg = "positive"
                 }
                 element.symbolLower = element.symbol.toLowerCase();
                 element.imageUrl = "https://static.coincap.io/assets/icons/" + element.symbolLower + "@2x.png";
-                // $.get(element.imageUrl)
-                //     .fail(function () {
-                //         element.imageUrl = "./img/logo_mark.png";
-                //         console.log("No");
-                //     })
             });
             console.log("YEET");
             var template = $("#coinsTemplate").html();
@@ -62,7 +57,7 @@ async function getCoinInfo(coinId) {
             var template = $("#modal-template").html();
             var renderTemplate = Mustache.render(template, coin);
             $('#modal-template-box').remove();
-            await $('.modal-content').prepend(renderTemplate);
+            await $('#modal-content-coinModal').prepend(renderTemplate);
             console.log(coinId);
             getHistory(coinId);
         }
@@ -113,7 +108,7 @@ function showGraph() {
                     display: true,
                     scaleLabel: {
                         display: true,
-                        labelString: 'Months'
+                        labelString: 'Dates'
                     }
                 }],
                 yAxes: [{
@@ -164,4 +159,19 @@ async function loadNews() {
             $('#Articles').append(renderTemplate);
         }
     });
+}
+
+async function addCoin(coin) {
+    //check if person is logged in
+    if (localStorage.getItem('loggedIn') === 'true') {
+        console.log(coin);
+        let amount = $('#amountOfCoins')[0];
+        console.log(amount.value);
+
+    } else {
+        var coinmodal = document.getElementById('coinModal');
+        coinmodal.style.display = 'none';
+        var modal = document.getElementById('myModal');
+        modal.style.display = 'block';
+    }
 }
