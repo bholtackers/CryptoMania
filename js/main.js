@@ -162,11 +162,43 @@ async function loadNews() {
 }
 
 async function addCoin(coin) {
+    debugger;
     //check if person is logged in
     if (localStorage.getItem('loggedIn') === 'true') {
         console.log(coin);
         let amount = $('#amountOfCoins')[0];
         console.log(amount.value);
+        let name = "";
+        let price = "";
+        let date = moment().format("YYYY-DD-MM");
+        console.log(date);
+        for (let i = 0; i < coins.data.length; i++){
+            console.log(coins.data[i]);
+            if (coins.data[i].id == coin){
+                name = coins.data[i].name;
+                price = coins.data[i].priceUsd;
+                break;
+            }
+        }
+        debugger;
+        await $.ajax({
+            method: "POST",
+            url: "app/Ajax.php",
+            data: {
+                ownerId: localStorage.getItem('id'),
+                name: name,
+                price: price,
+                totalValue: parseFloat(price) * amount,
+                amount: amount,
+                date: date,
+                case: 'addcoin',
+            },
+            success: function (response) {
+                console.log(response);
+                let result = JSON.parse(response);
+                console.log(result);
+            }
+        })
 
     } else {
         var coinmodal = document.getElementById('coinModal');
