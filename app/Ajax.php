@@ -28,4 +28,30 @@ switch ($case){
         echo json_encode($res);
         return;
     break;
+    case "updateCoin":
+        $coinId = $_POST['coinId'];
+        $totalValue = $_POST['totalValue'];
+        $totalAmount = $_POST['totalAmount'];
+        $query = "UPDATE cryptofolio SET amount = '$totalAmount', totalValue = '$totalValue' WHERE id='$coinId'";
+        mysqli_query($conn, $query);
+        echo 'Success';
+        return;
+    break;
+    case "sellCoin":
+        $coinId = $_POST['coinId'];
+        $totalValue = $_POST['totalValue'];
+        $totalAmount = $_POST['totalAmount'];
+        if  ($totalAmount == 0){
+            $query = "DELETE FROM cryptofolio WHERE id='$coinId'";
+            mysqli_query($conn, $query);
+            echo 'SuccessAll';
+            return;
+
+        } else {
+            $query = "UPDATE cryptofolio SET amount = '$totalAmount', totalValue = '$totalValue' WHERE id='$coinId'";
+            mysqli_query($conn, $query);
+            echo 'Success';
+            return;
+        }
+    break;
 }

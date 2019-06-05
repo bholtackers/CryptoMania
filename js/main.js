@@ -208,25 +208,177 @@ async function addCoin(coin) {
 }
 
 async function getCoinsFromUser() {
+    $('#userCoinsTemplate').empty();
     let userId = localStorage.getItem('id');
     await $.ajax({
         method: "POST",
         url: "app/Ajax.php",
         data: {
             ownerId: userId,
-            case: 'getcoins' 
+            case: 'getcoins'
         },
         success: async function (response) {
+            let userCoins = {
+                data: [
+
+                ]
+            }
             let result = JSON.parse(response);
             console.log(result);
+            userCoins.data = result;
             if (result.length > 0) {
                 console.log("found some!");
-                //TODO: Show the results
+                var template = $("#userCoinsTemplate").html();
+                var renderTemplate = Mustache.render(template, userCoins);
+                $('#userCoinTable tbody').append(renderTemplate);
+                $('#userCoinTable').DataTable({
+                    order: [
+                        [1, 'asc']
+                    ]
+                });
+                $('.dataTables_length').addClass('bs-select');
                 //TODO: Give option to delete the coins
             } else {
                 console.log("didn't find any");
-                //TODO: TELL M TO BUY SOME COINS!
+                $("#mainBody").prepend("<div class='animated fadeInLeft alert alert-danger' role='alert'>Looks like you don't own any coins yet! <a href='./index.php' class='alert-link'>Click here</a> To purchase your first coin!  <button type='button' class='close' data-dismiss='alert' aria-label='Close'><span aria-hidden='true'>&times;</span></button></div>");
             }
         }
     });
 }
+var modal = document.getElementById('buyMoreModal');
+// Get the <span> element that closes the modal
+var spanClose = document.getElementById("closeBuyMore");
+
+
+// When the user clicks on <span> (x), close the modal
+spanClose.onclick = function () {
+    modal.style.display = "none";
+};
+
+// When the user clicks anywhere outside of the modal, close it
+window.onclick = function (event) {
+    if (event.target === modal) {
+        modal.style.display = "none";
+    }
+};
+
+function buyMore(coinId, value, current, coinName) {
+    modal.style.display = 'block';
+    $('#coinTitle').text(coinName);
+    $('#buyButton').attr({
+        'data-coinId': coinId,
+        'data-value': value,
+        'data-current': current
+    });
+}
+
+async function finishPurchase() {
+    let button = $('#buyButton');
+    let coinId = button.attr('data-coinId');
+    let value = button.attr('data-value');
+    let current = button.attr('data-current');
+    let wanted = $('#moreNumber')[0].value;
+    let totalAmount = parseInt(current) + parseInt(wanted);
+    let totalValue = parseFloat(value) * totalAmount;
+    await $.ajax({
+        method: "POST",
+        url: "app/Ajax.php",
+        data: {
+            coinId: coinId,
+            totalValue: totalValue,
+            totalAmount: totalAmount,
+            case: 'updateCoin'
+        },
+        success: async function (response) {
+            console.log(response);
+            $("#buymorebody").append("<div class='animated fadeInLeft alert alert-success' role='alert'>Successfully bought more coins! The page will refresh in 2 seconds</div>");
+            setTimeout(function () {
+                location.reload();
+            }, 2500);
+        }
+    });
+}
+
+var modalSell = document.getElementById('sellCoinsModal');
+// Get the <span> element that closes the modal
+var spanCloseSell = document.getElementById("closeSellCoins");
+
+
+// When the user clicks on <span> (x), close the modal
+spanCloseSell.onclick = function () {
+    modalSell.style.display = "none";
+};
+
+// When the user clicks anywhere outside of the modal, close it
+window.onclick = function (event) {
+    if (event.target === modalSell) {
+        modalSell.style.display = "none";
+    }
+};
+
+function sell(coinId, value, current, coinName) {
+    console.log('Here');
+    modalSell.style.display = 'block';
+    $('#coinTitleSell').text(coinName);
+    $('#sellNumber').attr({
+        'max': current
+    });
+    $('#sellButton').attr({
+        'data-coinId': coinId,
+        'data-value': value,
+        'data-current': current
+    });
+}
+
+async function sellCoins() {
+    let button = $('#sellButton');
+    let coinId = button.attr('data-coinId');
+    let value = button.attr('data-value');
+    let current = button.attr('data-current');
+    let sell = $('#sellNumber')[0].value;
+    let totalAmount = parseInt(current) - parseInt(sell);
+    let totalValue = parseFloat(value) * totalAmount;
+    await $.ajax({
+        method: "POST",
+        url: "app/Ajax.php",
+        data: {
+            coinId: coinId,
+            totalValue: totalValue,
+            totalAmount: totalAmount,
+            case: 'sellCoin'
+        },
+        success: async function (response) {
+            console.log(response);
+            if (response == 'Success') {
+                $("#sellmorebody").append("<div class='animated fadeInLeft alert alert-success' role='alert'>Successfully sold " + sell + " coins! The page will refresh in 2 seconds</div>");
+                setTimeout(function () {
+                    location.reload();
+                }, 2500);
+            } else {
+                $("#sellmorebody").append("<div class='animated fadeInLeft alert alert-success' role='alert'>Successfully sold all coins! The page will refresh in 2 seconds</div>");
+                setTimeout(function () {
+                    location.reload();
+                }, 2500);
+            }
+        }
+    });
+}
+
+
+
+
+//websocket testing
+
+// const tradeWs = new WebSocket('wss://ws.coincap.io/trades/binance')
+
+//     tradeWs.onmessage = function (msg) {
+//         console.log(JSON.parse(msg.data));
+//             console.log(Object.values(msg.data));
+
+//     }
+
+// const pricesWs = new WebSocket('wss://ws.coincap.io/prices?assets=ALL')
+
+// pricesWs.onmessage = function (msg) {
+//     console.log(JSON.parse(msg.data));
+// }

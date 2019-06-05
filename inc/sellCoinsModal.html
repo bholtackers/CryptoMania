@@ -1,0 +1,16 @@
+<div id="sellCoinsModal" class="modal">
+
+    <!-- Modal content -->
+    <div class="modal-content">
+        <div class="modal-header">
+            <h2 id='coinTitleSell'></h2>
+            <span id="closeSellCoins">&times;</span>
+        </div>
+        <div id="sellmorebody" class="modal-body">
+            <label for="sellNumber">Select how many coins you want to sell</label>
+            <input id="sellNumber" type="number" min="1" value="1" name="sellNumber">
+            <button style="float: right;" type='button' id="sellButton" class='btn modalbtn btn-primary'
+                onclick='sellCoins()'> Sell </button>
+        </div>
+    </div>
+    <div>
