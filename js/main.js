@@ -369,16 +369,21 @@ async function sellCoins() {
 
 //websocket testing
 
-// const tradeWs = new WebSocket('wss://ws.coincap.io/trades/binance')
-
-//     tradeWs.onmessage = function (msg) {
-//         console.log(JSON.parse(msg.data));
-//             console.log(Object.values(msg.data));
-
-//     }
-
-// const pricesWs = new WebSocket('wss://ws.coincap.io/prices?assets=ALL')
-
-// pricesWs.onmessage = function (msg) {
-//     console.log(JSON.parse(msg.data));
-// }
+const tradeWs = new WebSocket('wss://ws.coincap.io/trades/binance')
+let array = {
+    data: []
+}
+tradeWs.onmessage = function (msg) {
+    array.data = JSON.parse(msg.data);
+    let currentCoin = {
+        "name": array.data.base,
+        "price": array.data.priceUsd
+    }
+    //console.log(currentCoin);
+    let price = $("#price_" + currentCoin.name + "")[0];
+    if (price != undefined) {
+        if (currentCoin.price != undefined) {
+            price.innerText = currentCoin.price;
+        }
+    }
+}

@@ -16,10 +16,10 @@
         <tbody>
             <template id="coinsTemplate">
                 {{#data}}
-                <tr>
+                <tr id="{{id}}">
                     <td><img src='{{imageUrl}}'style='width: 2rem'> {{symbol}}</td>
                     <td>{{name}}</td>
-                    <td>{{priceUsd}} </td>
+                    <td id="price_{{id}}">{{priceUsd}} </td>
                     <td>{{marketCapUsd}}</td>
                     <td class="{{PosOrNeg}}">{{volumeUsd24Hr}}</td>
                     <td> <button type='button' class='btn modalbtn btn-primary' data-toggle="modal"
