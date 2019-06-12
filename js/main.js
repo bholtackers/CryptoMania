@@ -147,13 +147,6 @@ async function loadNews() {
         success: async function (data) {
             $('#balls').remove();
             articles = data;
-            console.log(articles);
-            await articles.Data.forEach(element => {
-                console.log(element.published_on);
-                element.published_on = moment(element.published_on).format('D MMMM kk:mm:ss');
-            });
-            console.log(moment(1558110651).format('D MMMM kk:mm:ss'));
-            console.log(articles);
             var template = $("#newsArticle").html();
             var renderTemplate = Mustache.render(template, articles);
             $('#Articles').append(renderTemplate);

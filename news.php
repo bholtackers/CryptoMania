@@ -24,6 +24,8 @@
 </div>
 
 <?php include './inc/coinModal.html' ?>
+<?php include './inc/buyMoreModal.html' ?>
+<?php include './inc/sellCoinsModal.html' ?>
 <?php include './inc/Modal.html' ?>
 
 <?php include './inc/Footer.html' ?>
